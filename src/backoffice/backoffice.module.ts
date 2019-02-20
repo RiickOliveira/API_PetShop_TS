@@ -3,6 +3,8 @@ import { CustomerController } from './controllers/customer.controller';
 import { MongooseModule } from '@nestjs/mongoose';
 import { CustomerSchema } from './schemas/customer.schema';
 import { UserSchema } from './schemas/user.schema';
+import { AccountService } from './services/account.services';
+import { CustomerService } from './services/customer.service';
 
 @Module({
     imports : [MongooseModule.forFeature([
@@ -15,7 +17,7 @@ import { UserSchema } from './schemas/user.schema';
             schema: UserSchema
         }
     ])],
-    
+    providers: [AccountService, CustomerService],
     controllers : [CustomerController]
 })
 export class BackofficeModule {}
