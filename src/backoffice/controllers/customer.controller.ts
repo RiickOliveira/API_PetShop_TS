@@ -9,6 +9,8 @@ import { User } from "../models/user.model";
 import { CustomerService } from "../services/customer.service";
 import { Adress } from "../models/adress.model";
 import { CreateAddressContract } from "../contracts/Customer/create-address.contract";
+import { CreatePetsContract } from "../contracts/Customer/create-pet.contract";
+import { Pet } from "../models/pet.model";
 
 @Controller('v1/customers')
 export class CustomerController {
@@ -47,10 +49,40 @@ export class CustomerController {
     }
 
     @UseInterceptors(new ValidatorInterceptor(new CreateAddressContract()))
-    @Post()
-    async  addBillingAddress(@Body() model: Adress){
-
+    @Post(':document/addresses/billing')
+    async  addBillingAddress(@Param('document') document , @Body() model: Adress){
+        try {
+            await this.customerService.addBillingAddress(document, model);
+            return model;
+        } catch (error) {
+            throw new HttpException(new Result("Não foi possivel adicionar o seu endereço", false, null, error), HttpStatus.BAD_REQUEST);
+        }
     }
+
+    @UseInterceptors(new ValidatorInterceptor(new CreateAddressContract()))
+    @Post(':document/addresses/shipping')
+    async  addShippingAddress(@Param('document') document , @Body() model: Adress){
+        try {
+            await this.customerService.addShippingAddress(document, model);
+            return model;
+        } catch (error) {
+            throw new HttpException(new Result("Não foi possivel adicionar o seu endereço de entrega", false, null, error), HttpStatus.BAD_REQUEST);
+        }
+    }
+
+    @UseInterceptors(new ValidatorInterceptor(new CreatePetsContract()))
+    @Post(':document/pets')
+    async createPet(@Param('document') document, @Body() model: Pet) {
+        try {
+
+            const result = await this.customerService.createPet(document, model);
+            return new Result("Pet adicionado com sucesso", true, result, null)
+        
+        } catch (error) {
+            throw new HttpException(new Result("Não foi possivel criar seu pet",false, null, error), HttpStatus.BAD_REQUEST);
+        }
+    }
+
 
     @Put(':document')
     put(@Param('document') document,@Body() body) {

@@ -43,7 +43,7 @@ export const CustomerSchema = new mongoose.Schema({
         },
     ],
     
-    billingAdress : {
+    billingAddress : {
         zipcode : {
             type: String
         },
@@ -70,7 +70,7 @@ export const CustomerSchema = new mongoose.Schema({
         }
     },
     
-    shippingAdress : {
+    shippingAddress : {
         zipcode : {
             type: String
         },

@@ -10,7 +10,7 @@ export class CreateAddressContract implements Contract {
     
     validate(model: Adress): boolean {
         const flunt = new Flunt();
-
+        console.log(model)
         flunt.isFixedLen(model.zipCode, 8, 'CEP invalido');
         flunt.hasMinLen(model.street, 3,'Rua invalida');
         flunt.hasMinLen(model.neighborhood, 3,'Bairro invalido');
