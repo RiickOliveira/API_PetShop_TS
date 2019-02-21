@@ -20,13 +20,15 @@ export class CustomerController {
     ) {  }
 
     @Get()
-    get() {
-        return new Result(null, true, [], null);
+    async getAll() {
+        const customers = await this.customerService.findAll();
+        return new Result(null, true, customers, null);
     }
 
     @Get(':document')
-    getById(@Param('document') document) {
-        return new Result(null, true, {}, null);
+    async get(@Param('document') document) {
+        const customer = await this.customerService.find(document);
+        return new Result(null, true, customer, null);
     }
 
     @Post()
@@ -48,8 +50,8 @@ export class CustomerController {
 
     }
 
-    @UseInterceptors(new ValidatorInterceptor(new CreateAddressContract()))
     @Post(':document/addresses/billing')
+    @UseInterceptors(new ValidatorInterceptor(new CreateAddressContract()))
     async  addBillingAddress(@Param('document') document , @Body() model: Adress){
         try {
             await this.customerService.addBillingAddress(document, model);
@@ -59,8 +61,8 @@ export class CustomerController {
         }
     }
 
-    @UseInterceptors(new ValidatorInterceptor(new CreateAddressContract()))
     @Post(':document/addresses/shipping')
+    @UseInterceptors(new ValidatorInterceptor(new CreateAddressContract()))
     async  addShippingAddress(@Param('document') document , @Body() model: Adress){
         try {
             await this.customerService.addShippingAddress(document, model);
@@ -70,8 +72,8 @@ export class CustomerController {
         }
     }
 
-    @UseInterceptors(new ValidatorInterceptor(new CreatePetsContract()))
     @Post(':document/pets')
+    @UseInterceptors(new ValidatorInterceptor(new CreatePetsContract()))
     async createPet(@Param('document') document, @Body() model: Pet) {
         try {
 
@@ -83,10 +85,15 @@ export class CustomerController {
         }
     }
 
-
-    @Put(':document')
-    put(@Param('document') document,@Body() body) {
-        return new Result('Cliente atualizado com exito', true, body, null);
+    @Put(':document/pets/:id')
+    @UseInterceptors(new ValidatorInterceptor(new CreatePetsContract()))
+    async updatePet(@Param('document') document, @Param('id') id, @Body() model: Pet) {
+        try {
+            const result = this.customerService.updatePet(document, id, model);
+            return new Result("Pet atualizado com sucesso", true, model, null);
+        } catch (error) {
+            throw new HttpException(new Result("Nao foi possivel atualizar o Pet", false, null, error), HttpStatus.BAD_REQUEST);
+        }
     }
 
     @Delete(':document')
