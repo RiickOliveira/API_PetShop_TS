@@ -25,6 +25,7 @@
     "@nestjs/mongoose": "^5.2.2",
     "@nestjs/typeorm": "^6.0.0",
     "mongoose": "^5.4.10",
+    "mssql": "^5.1.0",
     "mysql": "^2.16.0",
     "reflect-metadata": "^0.1.12",
     "rimraf": "^2.6.2",
