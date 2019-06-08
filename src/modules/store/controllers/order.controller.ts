@@ -1,9 +1,8 @@
-import { Controller, Param, Get, Post, Body  } from "@nestjs/common";
+import { Controller, Param, Get, Post, Body, HttpException, HttpStatus } from "@nestjs/common";
 import { OrderService } from "../services/order.service";
 import { OrderItemService } from "../services/order-item.service";
 import { ProductService } from "../services/product.service";
 import { Result } from "src/modules/backoffice/models/result.model";
-import { HttpException, HttpStatus } from "types/@nestjs/common";
 import { OrderItemDto } from "../dtos/order-item.dto";
 import { Order } from "../entities/order.entity";
 import { OrderItem } from "../entities/order-item.entity";
@@ -57,7 +56,6 @@ export class OrderController {
             }
 
             return new Result(null,true,model,null);
-
         } catch (error) {
             throw new HttpException(new Result('Não foi possivel criar o seu pedido',false,null,error),HttpStatus.BAD_REQUEST);
         }

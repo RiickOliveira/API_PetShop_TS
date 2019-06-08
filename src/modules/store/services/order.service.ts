@@ -1,4 +1,4 @@
-import { Injectable } from "types/@nestjs/common";
+import { Injectable } from "@nestjs/common";
 import { InjectRepository } from "@nestjs/typeorm";
 import { Order } from "../entities/order.entity";
 import { Repository } from "typeorm";
