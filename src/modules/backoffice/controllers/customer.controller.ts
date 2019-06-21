@@ -1,4 +1,5 @@
-import { Controller, Get, Post, Delete, Param, Body, UseInterceptors, HttpException, HttpStatus, Put } from "@nestjs/common";
+import { Controller, Get, Post, Delete, Param, Body, UseInterceptors, HttpException, HttpStatus, Put, CacheInterceptor, UseGuards } from "@nestjs/common";
+import { Md5 } from "md5-typescript";
 import { Customer } from "../models/customer.model";
 import { Result } from "../models/result.model";
 import { ValidatorInterceptor } from "src/interceptors/validator.interceptor";
@@ -13,6 +14,7 @@ import { UpdateCustomerDto } from "../DTOs/customer/update-customer.dto";
 import { CreateCreditCardContract } from "../contracts/customer/create-creditcard.contract";
 import { CreditCard } from "../models/creditCard.model";
 import { QueryContract } from "../contracts/query.contract";
+import { JwtAuthGuard } from "src/shared/guards/auth.guard";
 
 @Controller('v1/customers')
 export class CustomerController {
@@ -22,11 +24,13 @@ export class CustomerController {
     ) { }
 
     @Get()
+    @UseInterceptors(CacheInterceptor)
+    @UseGuards(JwtAuthGuard)
     async getAll() {
         const customers = await this.customerService.findAll();
         return new Result(null, true, customers, null);
     }
-
+   
     @Get(':document')
     async get(@Param('document') document) {
         const customer = await this.customerService.find(document);
@@ -36,9 +40,9 @@ export class CustomerController {
     @Post()
     @UseInterceptors(new ValidatorInterceptor(new CreateCustomerContract()))
     async post(@Body() model: CreateCustomerDto) {
-        try {
-            const user = await this.accountService.create(new User(model.document, model.password, ['user'], true))
-
+        try {                     
+            const password = await Md5.init(`${model.password}${process.env.SALT_KEY}`)
+            const user = await this.accountService.create(new User(model.document, password, ['user'], true))
             const customer = new Customer(model.name, model.document, model.email, null, null, null, null, user);
             const result = await this.customerService.create(customer)
 

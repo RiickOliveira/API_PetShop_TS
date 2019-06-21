@@ -18,7 +18,7 @@ export class AccountController {
     @Post('authenticate')
     async authenticate(@Body() model: AuthenticateDto): Promise<any> {
         const customer = await this.accountService.authenticate(model.username, model.password)
-
+        console.log(customer)
         //caso nao encontre o usuario
         if (!customer)
             throw new HttpException(new Result('Usuário ou senha inválidos', false, null, null), HttpStatus.UNAUTHORIZED);

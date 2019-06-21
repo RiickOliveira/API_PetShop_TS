@@ -2,8 +2,6 @@ import { Injectable } from "@nestjs/common";
 import { InjectModel } from "@nestjs/mongoose";
 import { Customer } from "../models/customer.model";
 import { Model } from 'mongoose'
-import { Adress } from "../models/adress.model";
-import { Pet } from "../models/pet.model";
 import { QueryDto } from "../DTOs/query.dto";
 import { UpdateCustomerDto } from "../DTOs/customer/update-customer.dto";
 import { CreditCard } from "../models/creditCard.model";

@@ -3,10 +3,11 @@ import { BackofficeModule } from 'src/modules/backoffice/backoffice.module';
 import { MongooseModule } from '@nestjs/mongoose';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { StoreModule } from 'src/modules/store/store.module';
+import { AgendaModule } from './modules/agenda/agenda.module';
 
 @Module({
   imports: [
-    MongooseModule.forRoot('mongodb://rick:rick7180@ds064748.mlab.com:64748/7180'),  
+    MongooseModule.forRoot(process.env.CONNECTION_STRING),  
     BackofficeModule,
     StoreModule,
     TypeOrmModule.forRoot({
@@ -18,7 +19,8 @@ import { StoreModule } from 'src/modules/store/store.module';
       database: 'PetShop',
       entities: [__dirname + '/**/*.entity{.ts,.js}'],
       synchronize: true,
-    })
+    }),
+    AgendaModule
   ],
   controllers: [],
   providers: [],

@@ -17,8 +17,7 @@ export class AuthService {
             image: image,
             roles: roles
         };
-        return this.jwtService.sign(user);
-        
+        return this.jwtService.sign(user);        
     }
 
     async validateUser(payload: JwtPayload): Promise<any> {
