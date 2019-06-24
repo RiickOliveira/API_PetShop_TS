@@ -27,7 +27,9 @@ export class AccountService {
         var customer = await this.customerModel
             .findOne({document: username})
             .populate('user')
-            .exec();           
+            .exec(); 
+            
+        if(!customer) throw new HttpException(new Result("Usuário não encontrado",false,null,null),HttpStatus.BAD_REQUEST);
         
         const pass = await Md5.init(`${password}${process.env.SALT_KEY}`);
         if (pass.toString() == customer.user.password.toString()) {
