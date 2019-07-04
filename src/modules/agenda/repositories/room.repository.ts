@@ -3,9 +3,12 @@ import { Room } from "../models/room.model";
 
 @Injectable()
 export class RoomRepository {
-    async findOneById(id: string): Promise<Room> {
-        console.log('repository: findBYid');
-
+    async checkAvailability(id: string, date: Date): Promise<Room> {
+        //Ler do banco
         return new Room('231321321')
+    }
+
+    async book(room: Room) {
+        //Salvar no banco
     }
 }
