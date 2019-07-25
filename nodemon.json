@@ -4,8 +4,5 @@
   "ignore": ["src/**/*.spec.ts"],
   "exec": "ts-node -r tsconfig-paths/register src/main.ts",
   "env": {
-    "NODE_ENV": "development",
-    "CONNECTION_STRING":"mongodb://rick:rick7180@ds064748.mlab.com:64748/7180",
-    "SALT_KEY":"3a2s1d4a6s54d6a5s4d849as8d465s4a"
   }
 }
